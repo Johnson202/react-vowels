@@ -4,14 +4,17 @@ import "./App.css";
 function App() {
   const [input, setInput] = useState("");
 
-  const [submitted, setSubmitted] = useState("");
+  const [submitted, setSubmitted] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (input) {
-      setSubmitted(input.trim());
-      setInput("");
-    }
+    if (input.trim() && !submitted.includes(input.trim())) {
+      setSubmitted((prevSubmitted) => {
+        const newSubmitted = [...prevSubmitted, input.trim()]
+        setInput("");
+        return newSubmitted;
+      });
+    };
   };
 
   return (
@@ -26,7 +29,7 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
-      {submitted && <p className="word">{submitted}</p>}
+      {submitted && submitted.map((word) => <p className="word">{word}</p>)}
     </main>
   );
 }
